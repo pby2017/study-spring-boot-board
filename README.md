@@ -240,6 +240,60 @@
             <li th:if='${session.userId!=null}'><a href="logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
         </ul>
         ```
+* Create session logout
+    * Check logout button in index.html
+        ```html
+        <li th:if='${session.userId!=null}'><a href="/logoutPage"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+        ```
+    * Add logout page function in MainController.java
+        ```java
+        @Controller
+        public class MainController {
+            ...                        
+            @GetMapping("/logoutPage")
+            public String logoutPage() {
+                return "logout";
+            }
+        }
+        ```
+    * Create logout.html from join.html copy
+        ```html
+        <body>
+            <form action="logoutRequest" method="post">
+                <input type="submit" value="로그아웃">
+            </form>
+        </body>
+        ```
+    * Add logoutRequest funtion in UsersController.java
+        ```java
+        @Controller
+        public class UsersController {
+            ...
+            @PostMapping("/logoutRequest")
+            public String logoutRequest() {
+                
+                String page = logoutService.logout();
+                
+                return page;
+            }
+        }
+        ```
+    * Create LogoutService.java
+        ```java
+        @Service
+        public class LogoutService {
+
+            @Autowired
+            HttpSession session;
+
+            public String logout() {
+                
+                session.invalidate();
+
+                return "index";
+            }
+        }
+        ```
 
 ## 2019 / 02 / 24 Sun
 * Create Spring Starter Project ()
