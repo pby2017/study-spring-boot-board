@@ -12,6 +12,11 @@
  * Refactoring controller and service role
  * Create UserPasswordHashClass using SHA256
  * Create LoginService.java
+4. [Design index page](https://youtu.be/ua9YdiCs4xs)
+ * Get bootstrap Webpage template
+ * Add thymeleaf in index.html meta tag
+ * Modify annotation from @RequestMapping to @GetMapping
+ * Modify JPA ORM query method from AndAnd to And but didn't work
 
 ## record
 
