@@ -2,6 +2,9 @@ package com.example.service;
 
 import java.security.MessageDigest;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class UserPasswordHashClass {
 
 	public String getSHA256(String plainText) {
