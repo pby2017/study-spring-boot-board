@@ -3,13 +3,30 @@
 # [following Spring boot board edu streaming by 우종선](https://www.youtube.com/channel/UCdShL6X4Ac5xlLouOhRvfvg)
 
 ## study curriculum
-1. [Join Controller](https://youtu.be/8K5bSFKAhf8)
+1. [Join controller](https://youtu.be/8K5bSFKAhf8)
  * Create package, class, interface, html for join function
+2. [Join JPA database](https://youtu.be/EMUcgCZhMjI)
+ * Create database
+ * Modify application.properties database
 
 ## record
 
+## 2019 / 02 / 25 Mon
+* Create database in MySQL workbench
+* Modify application.properties database
+    * before execute web
+        ```
+        spring.datasource.url=jdbc:mysql://localhost:3306/pilot
+        ->
+        spring.datasource.url=jdbc:mysql://localhost:3306/example?serverTimezone=UTC
+        ```
+    * after execute web & create database table from JPA(Users.java)
+        ```
+        spring.jpa.hibernate.ddl-auto=create
+        ->
+        spring.jpa.hibernate.ddl-auto=validate
+        ```
 ## 2019 / 02 / 24 Sun
-
 * Create Spring Starter Project ()
     ```
     > project name : exampleProject
