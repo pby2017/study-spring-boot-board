@@ -108,7 +108,7 @@
     * Add ORM query function in UserRepository
         ```java
         public interface UsersRepository extends JpaRepository<Users, Long>{
-            public Users findByUser_idAndAndUser_pw(String userId, String userPw);
+            public Users findByUser_idAndUser_pw(String userId, String userPw);
         }
         // need modify preference
         // Window - Preference - Spring - Validation - Data Validator - Invalid Derived Query [check off 체크해제]
@@ -131,7 +131,7 @@
                 
                 String hashedPassword = userPasswordHashClass.getSHA256(userPw);
                 
-                Users users = usersRepository.findByUser_idAndAndUser_pw(userId, hashedPassword);
+                Users users = usersRepository.findByUser_idAndUser_pw(userId, hashedPassword);
                 if(users == null) {
                     return "login";
                 }
