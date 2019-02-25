@@ -21,8 +21,8 @@ public class MainController {
 		return "login";
 	}
 	
-	@GetMapping("/logout")
-	public String logout() {
+	@GetMapping("/logoutPage")
+	public String logoutPage() {
 		return "logout";
 	}
 }
