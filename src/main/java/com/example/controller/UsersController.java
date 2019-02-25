@@ -21,9 +21,9 @@ public class UsersController {
 
 	@PostMapping("/joinRequest")
 	public String joinRequest(@RequestParam Map<String, String> paramMap) {
-		String userId = paramMap.get("user_id");
-		String userPw = paramMap.get("user_pw");
-		String userName = paramMap.get("user_name");
+		String userId = paramMap.get("userId");
+		String userPw = paramMap.get("userPw");
+		String userName = paramMap.get("userName");
 
 		String page = joinService.joinUser(userId, userPw, userName);
 
@@ -32,8 +32,8 @@ public class UsersController {
 
 	@PostMapping("/loginRequest")
 	public String loginRequest(@RequestParam Map<String, String> paramMap) {
-		String userId = paramMap.get("user_id");
-		String userPw = paramMap.get("user_pw");
+		String userId = paramMap.get("userId");
+		String userPw = paramMap.get("userPw");
 
 		String page = loginService.login(userId, userPw);
 
