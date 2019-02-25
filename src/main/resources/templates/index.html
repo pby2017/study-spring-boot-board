@@ -64,9 +64,9 @@ footer {
 					<li><a href="#">Contact</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li th:if='${session.userId==null}'><a href="joinPage"><span class="glyphicon glyphicon-log-in"></span> Join</a></li>
-					<li th:if='${session.userId==null}'><a href="loginPage"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-					<li th:if='${session.userId!=null}'><a href="logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+					<li th:if='${session.userId==null}'><a href="/joinPage"><span class="glyphicon glyphicon-log-in"></span> Join</a></li>
+					<li th:if='${session.userId==null}'><a href="/loginPage"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+					<li th:if='${session.userId!=null}'><a href="/logoutPage"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
 				</ul>
 			</div>
 		</div>
