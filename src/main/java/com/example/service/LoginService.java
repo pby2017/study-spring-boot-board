@@ -31,6 +31,8 @@ public class LoginService {
 		if (users == null) {
 			return "login";
 		}
+		
+		session.setAttribute("userId", userId);
 
 		return "index";
 	}
