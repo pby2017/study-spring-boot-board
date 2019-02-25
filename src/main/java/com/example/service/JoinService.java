@@ -1,9 +1,9 @@
-package service;
+package com.example.service;
 
 import javax.servlet.http.HttpServletRequest;
 
-import model.Users;
-import repository.UsersRepository;
+import com.example.model.Users;
+import com.example.repository.UsersRepository;
 
 public class JoinService {
 	public void joinUser(HttpServletRequest request, UsersRepository usersRepository) {
