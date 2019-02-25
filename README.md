@@ -8,11 +8,31 @@
 2. [Join JPA database](https://youtu.be/EMUcgCZhMjI)
  * Create database
  * Modify application.properties database
+3. [Refactoring & add service](https://youtu.be/sxUGWToMBfI)
+ * Refactoring controller and service role
+ * Create UserPasswordHashClass using SHA256
+ * Create LoginService.java
 
 ## record
 
 ## 2019 / 02 / 25 Mon
 * Create database in MySQL workbench
+* Anntation
+  ```
+  Class
+  @Service : this is service class ?
+  @Controller : this is controller class ?
+
+  Attribute
+  @Autowired : create instance and make object ?
+  
+  Method
+  @RequestMapping : get request from method what action ?
+  @PostMapping : get param from method POST action ?
+
+  Parameter
+  @RequestParam : get param to parameter value ?
+  ```
 * Modify application.properties database
     * before execute web
         ```
@@ -25,6 +45,112 @@
         spring.jpa.hibernate.ddl-auto=create
         ->
         spring.jpa.hibernate.ddl-auto=validate
+        ```
+* Refactoring controller and service role
+    * Controller only get param and send param to service
+        ```java
+        @PostMapping("/joinRequest")
+        public String joinRequest(@RequestParam Map<String, String> paramMap) {
+            String userId = paramMap.get("user_id");
+            String userPw = paramMap.get("user_pw");
+            String userName = paramMap.get("user_name");
+
+            String page = joinService.joinUser(userId, userPw, userName);
+
+            return page;
+        }
+        ```
+    * Service only get data and process data and save data
+        ```java
+        public String joinUser(String userId, String userPw, String userName) {
+
+            if (userId.equals("") || userPw.equals("") || userName.equals("")) {
+                return "join";
+            }
+
+            Users users = new Users();
+            users.setUser_id(userId);
+            String hashedPassword = userPasswordHashClass.getSHA256(userPw);
+            users.setUser_pw(hashedPassword);
+            users.setUser_name(userName);
+
+            usersRepository.save(users);
+            return "index";
+        }
+        ```
+* Create UserPasswordHashClass using SHA256
+    ```java
+    public class UserPasswordHashClass {
+
+        public String getSHA256(String plainText) {
+            String shaString = "";
+            try {
+                MessageDigest sh = MessageDigest.getInstance("SHA-256");
+                sh.update(plainText.getBytes());
+                byte byteData[] = sh.digest();
+                StringBuffer stringBuffer = new StringBuffer();
+                int byteSize = byteData.length;
+
+                for (int i = 0; i < byteSize; i++) {
+                    stringBuffer.append(Integer.toString(byteData[i] & 0xff + 0x100, 16).substring(1));
+                }
+                shaString = stringBuffer.toString();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                shaString = null;
+            }
+            return shaString;
+        }
+    }
+    ```
+* Create LoginService
+    * Add ORM query function in UserRepository
+        ```java
+        public interface UsersRepository extends JpaRepository<Users, Long>{
+            public Users findByUser_idAndAndUser_pw(String userId, String userPw);
+        }
+        // need modify preference
+        // Window - Preference - Spring - Validation - Data Validator - Invalid Derived Query [check off 체크해제]
+        ```
+    * Create LoginService.java
+        ```java
+        @Service
+        public class LoginService {
+            
+            @Autowired
+            private UserPasswordHashClass userPasswordHashClass;
+            
+            @Autowired
+            private UsersRepository usersRepository;
+            
+            public String login(String userId, String userPw) {
+                if(userId.equals("") || userPw.equals("")) {
+                    return "login";
+                }
+                
+                String hashedPassword = userPasswordHashClass.getSHA256(userPw);
+                
+                Users users = usersRepository.findByUser_idAndAndUser_pw(userId, hashedPassword);
+                if(users == null) {
+                    return "login";
+                }
+                
+                return "index";
+            }
+        }
+        ```
+    * Modify loginRequest function in UsersController.java
+        ```java
+        @PostMapping("/loginRequest")
+        public String loginRequest(@RequestParam Map<String, String> paramMap) {
+            String userId = paramMap.get("user_id");
+            String userPw = paramMap.get("user_pw");
+
+            String page = loginService.login(userId, userPw);
+
+            return page;
+        }
         ```
 ## 2019 / 02 / 24 Sun
 * Create Spring Starter Project ()
