@@ -14,9 +14,6 @@
  * Create LoginService.java
 4. [Design index page](https://youtu.be/ua9YdiCs4xs)
  * Get bootstrap Webpage template
- * Add thymeleaf in index.html meta tag
- * Modify annotation from @RequestMapping to @GetMapping
- * Modify JPA ORM query method from AndAnd to And but didn't work
 
 ## record
 
@@ -28,7 +25,7 @@
   @Service : this is service class ?
   @Controller : this is controller class ?
 
-  Attribute
+  Field
   @Autowired : create instance and make object ?
   
   Method
@@ -157,6 +154,93 @@
             return page;
         }
         ```
+* Add thymeleaf in index.html
+    ```html
+    <!DOCTYPE html>
+    <html xmlns:th="http://www.thymeleaf.org">
+    ...
+    <body>
+        ...
+        <ul class="nav navbar-nav navbar-right">
+            <li th:if='${session.loginUser==null}'><a href="joinPage"><span class="glyphicon glyphicon-log-in"></span> Join</a></li>
+            <li th:if='${session.loginUser==null}'><a href="loginPage"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            <li th:if='${session.loginUser!=null}'><a href="logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+        </ul>
+        ...
+    </body>
+    ```
+* Add thymeleaf in index.html meta tag
+    ```html
+    <!DOCTYPE html>
+    <html xmlns:th="http://www.thymeleaf.org">
+    ```
+* Modify annotation from @RequestMapping to @GetMapping in MainController.java
+    ```java
+    @Controller
+    public class MainController {
+
+        @GetMapping("/")
+        public String index() {
+            return "index";
+        }
+        
+        @GetMapping("/joinPage")
+        public String joinPage() {
+            return "join";
+        }
+        
+        @GetMapping("/loginPage")
+        public String loginPage() {
+            return "login";
+        }
+        
+        @GetMapping("/logout")
+        public String logout() {
+            return "logout";
+        }
+    }
+    ```
+* Modify JPA ORM query method
+    * from AndAnd to And but didn't work
+        ```java
+        public interface UsersRepository extends JpaRepository<Users, Long>{
+            public Users findByUser_idAndUser_pw(String userId, String userPw);
+        }
+        ```
+    * so remodify user_id to userId (camel case) then did work
+        ```java
+        public interface UsersRepository extends JpaRepository<Users, Long>{
+            public Users findByUserIdAndUserPw(String userId, String userPw);
+        }
+        ```
+* Add session remain function
+    * Add HttpSession in LoginService.java
+        ```java
+        @Service
+        public class LoginService {
+
+            ...
+            @Autowired
+            HttpSession session;
+
+            public String login(String userId, String userPw) {
+                ...
+                
+                session.setAttribute("userId", userId);
+
+                return "index";
+            }
+        }
+        ```
+    * Check th:if {userId} keyword in index.html
+        ```html
+        <ul class="nav navbar-nav navbar-right">
+            <li th:if='${session.userId==null}'><a href="joinPage"><span class="glyphicon glyphicon-log-in"></span> Join</a></li>
+            <li th:if='${session.userId==null}'><a href="loginPage"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            <li th:if='${session.userId!=null}'><a href="logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+        </ul>
+        ```
+
 ## 2019 / 02 / 24 Sun
 * Create Spring Starter Project ()
     ```
